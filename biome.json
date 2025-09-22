@@ -1,37 +1,71 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
-  "files": {
-    "ignoreUnknown": true,
-    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
-  },
-  "formatter": {
-    "enabled": true,
-    "indentStyle": "space",
-    "indentWidth": 2
-  },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "recommended": true,
-      "suspicious": {
-        "noUnknownAtRules": "off"
-      }
-    },
-    "domains": {
-      "next": "recommended",
-      "react": "recommended"
-    }
-  },
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
-    }
-  }
-}
+   "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+   "root": true,
+   "vcs": {
+     "enabled": false,
+     "clientKind": "git",
+     "useIgnoreFile": true,
+     "defaultBranch": "main"
+   },
+   "files": {
+     "ignoreUnknown": true,
+     "includes": [
+       "**",
+       "!**/.next/**/*",
+       "!**/node_modules/**/*",
+       "!**/.husky/**/*",
+       "!**/dist/**/*",
+       "!**/out/**/*",
+       "!**/generated/**/*",
+       "!**/.turbo/**/*"
+     ]
+   },
+   "assist": { "actions": { "source": { "organizeImports": "on" } } },
+   "formatter": {
+     "enabled": true,
+     "formatWithErrors": false,
+     "indentStyle": "space",
+     "lineEnding": "lf",
+     "indentWidth": 2,
+     "lineWidth": 120
+   },
+   "javascript": {
+     "formatter": {
+       "quoteStyle": "single",
+       "bracketSameLine": false,
+       "bracketSpacing": true,
+       "jsxQuoteStyle": "single",
+       "semicolons": "always",
+       "trailingCommas": "all"
+     }
+   },
+   "json": {
+     "formatter": {
+       "trailingCommas": "none"
+     }
+   },
+   "linter": {
+     "rules": {
+       "recommended": true,
+       "suspicious": {
+         "noExplicitAny": "off",
+         "noArrayIndexKey": "off",
+         "noConsole": { "level": "off", "options": { "allow": ["log"] } }
+       },
+       "a11y": {
+         "useKeyWithClickEvents": "off",
+         "noStaticElementInteractions": "off"
+       },
+       "correctness": {
+         "noUnusedVariables": {
+           "level": "info",
+           "fix": "unsafe"
+         }
+       },
+       "complexity": {
+         "noForEach": "off"
+       },
+       "style": {}
+     }
+   }
+ }
