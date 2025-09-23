@@ -1,8 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { ChevronLeft } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { getAllPaths, parseFrontmatter } from '@/lib/utils';
+import { cn, getAllPaths, parseFrontmatter } from '@/lib/utils';
 import { mdxComponents } from '@/mdx-components';
 
 export function generateStaticParams() {
@@ -46,11 +49,41 @@ export default async function Page({ params }: PageProps) {
 
   const { metadata, content: mdxContent } = parseFrontmatter(fileContent);
 
+  const publishedAt = metadata.publishedAt
+    ? new Date(metadata.publishedAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : null;
+
   return (
-    <main className='max-w-[600px] mx-auto px-4 md:py-8 space-y-6'>
-      <h1 className='scroll-m-20 text-4xl font-bold tracking-tight first:mt-0'>{metadata.title}</h1>
-      <p className='text-sm text-muted-foreground'>{metadata.summary}</p>
-      <p className='text-sm text-muted-foreground'>{metadata.publishedAt}</p>
+    <main className='max-w-[650px] mx-auto px-4 py-4 md:py-8'>
+      {slug !== undefined && (
+        <div className='flex items-center whitespace-nowrap gap-1 pb-4'>
+          <ChevronLeft className='size-5' /> <Link href='/'>plvo.dev</Link>
+        </div>
+      )}
+
+      <header className='space-y-3'>
+        <div className={cn(metadata.imageUrl && 'flex max-sm:flex-col-reverse justify-between items-center gap-2')}>
+          <h1 className='h1-mdx'>{metadata.title}</h1>
+          {metadata.imageUrl && (
+            <Image
+              src={metadata.imageUrl}
+              className='rounded-lg size-10 md:size-14'
+              alt={metadata.title || ''}
+              width={100}
+              height={100}
+            />
+          )}
+        </div>
+        <div className={cn(publishedAt && 'w-full flex flex-col-reverse md:grid md:grid-cols-3 gap-2')}>
+          <p className={cn(publishedAt && 'col-span-2', 'text-muted-foreground text-justify')}>{metadata.summary}</p>
+          {publishedAt && <code className='whitespace-nowrap text-muted-foreground md:text-right'>{publishedAt}</code>}
+        </div>
+      </header>
+
       <MDXRemote source={mdxContent} components={mdxComponents} />
     </main>
   );

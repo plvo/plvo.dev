@@ -13,7 +13,7 @@ export type MdxFrontmatter = {
   title: string;
   summary: string;
   publishedAt: string;
-  image?: string;
+  imageUrl?: string;
 };
 
 export type ParsedFrontmatterReturn = {
